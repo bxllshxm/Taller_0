@@ -1,0 +1,173 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.PublicKey;
+import ucn.StdIn;
+import ucn.StdOut;
+
+public class App {
+    public static void leerArchivo() throws IOException {
+        BufferedReader archClientes = new BufferedReader(new FileReader("clientes.txt"));
+        BufferedReader archPeliculas = new BufferedReader(new FileReader("status.txt"));
+        BufferedReader archStatus = new BufferedReader(new FileReader("peliculas.txt"));
+        
+        String linea;
+        String[] vecRuts;
+        String[] vecPasswords;
+        vecRuts = new String[2];
+        vecPasswords = new String[2];
+        int cont = 0;
+
+        while ((linea = archClientes.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            String nombre = partes[0];
+            String apellido = partes[1];
+            String rut = partes[2];
+            String contraseña = partes[3];
+            double saldo = Double.parseDouble(partes[4]);
+            vecRuts[cont] = nombre;
+            cont ++;
+            
+        }
+        for (int i=0; i<vecRuts.length; i++) {
+            StdOut.print(vecRuts[i]);
+        }
+
+        while ((linea = archStatus.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            String rutStatus = partes[0];
+            String status = partes[1];
+        }
+        
+
+        while ((linea = archPeliculas.readLine()) != null) {
+            String[] partes = linea.split(",");
+
+            int longitud = partes.length;
+            String pelicula = partes[0];
+            String tipo = partes[1];
+            double recuadado = Double.parseDouble(partes[2]);
+            StdOut.print(longitud);
+            if(longitud == 5) {
+                String primeraSala = partes[3];
+                String primerHorario = partes[4];
+                String segundaSala = "";
+                String segundoHorario = ""; 
+                String terceraSala = "";
+                String tercerHorario = "";
+            }else if(longitud ==7) {
+                String primeraSala = partes[3];
+                String primerHorario = partes[4]; 
+                String segundaSala = partes[5];
+                String segundoHorario = partes[6];
+                String terceraSala = "";
+                String tercerHorario = "";  
+            }else if(longitud ==9) {
+                String primeraSala = partes[3];
+                String primerHorario = partes[4]; 
+                String segundaSala = partes[5];
+                String segundoHorario = partes[6]; 
+                String terceraSala = partes[7];
+                String tercerHorario = partes[8];  
+            }  
+        }
+      
+    }
+    public static void crearSala() {
+        int[][] sala;
+        sala = new int[10][30];
+        for (int i=0; i<10; i++) {
+            for (int j=0; j<30; j++) {
+                sala[i][j] = 0;
+            }
+        }
+        int relleno = 1;
+        for (int i=0; i<4;i++) {
+            for (int j=5; j < 25; j++) {
+                sala[i][j] = relleno;
+                relleno ++;
+            }
+        }
+        int relleno2 = 81;
+        for (int i=4; i<10;i++) {
+            for (int j=0; j < 30; j++) {
+                sala[i][j] = relleno2;
+                relleno2 ++; // 
+            }
+        }
+        StdOut.println();
+        StdOut.println("                                                       ---------------------------------------------------------------------");
+        StdOut.println("                                                                                     PANTALLA");
+        StdOut.println("");
+        for (int i=0; i<10; i++) {
+            for (int j=0; j<30; j++) {
+                if(sala[i][j] == 0) {
+                    StdOut.print("     ");
+                if(i<=3 &&  j==4) {
+                    StdOut.print("    | ");
+                    }
+                
+                
+                if(sala[i][j] > 100 && i==0) {
+                    StdOut.print("|");
+                    }
+                }else if(sala[i][j] < 10) {
+                    if(i<10 && i>3 && j==0) {
+                        StdOut.print("|00"+sala[i][j]+" | ");
+                    }else {
+                        StdOut.print("00"+sala[i][j]+" | ");
+                        
+                    }
+                }else if(sala[i][j] > 9 && sala[i][j] < 100) {
+                    if(i<10 && i>3 && j==0) {
+                        StdOut.print("|0"+sala[i][j]+" | ");
+                    }else {
+                        StdOut.print("0"+sala[i][j]+" | ");
+                        
+                    }
+                }else if(sala[i][j] > 99){
+                    if(i<10 && i>3 && j==0) {                        
+                    StdOut.print("|"+sala[i][j]+" | ");
+                    }else{
+                    StdOut.print(sala[i][j]+" | ");
+                    }
+                    
+                }
+            }
+            StdOut.println(""); 
+        }
+    }    
+    public static int compraEntrada() {
+        StdOut.println("");
+        StdOut.print("Elige un asiento:");
+        int asiento = StdIn.readInt();
+        return asiento;
+    }
+    public static void menuCliente() {
+        int numero = 0;
+        String[] vecRut;
+        String[] vecPassword;
+        vecRut = new String[100];
+        vecPassword = new String[100];
+        StdOut.println("Bienvenido a Cuevana");
+        StdOut.println("1)Iniciar Sesión");
+        StdOut.println("2)Registrar");
+        StdOut.print("Ingresa una opción:");
+        int opcion = StdIn.readInt();
+        if (opcion == 1) {
+        }
+        if (opcion == 2) {
+            StdOut.print("Ingresa un rut:");
+            vecRut[numero] = StdIn.readString();
+            StdOut.print("Ingresa una contraseña:");
+            vecPassword[numero] = StdIn.readString();    
+        }
+        crearSala();
+        compraEntrada();
+    }
+    public static void main(String[] args) throws Exception {
+        leerArchivo();
+        menuCliente();
+    }   
